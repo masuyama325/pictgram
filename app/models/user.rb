@@ -5,11 +5,19 @@ class User < ApplicationRecord
     validates :email, presence: true, format: { with: VALID_EMAIL_REGEX }
     
     VALID_REGEX = /\A(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\d)[a-zA-Z\d]{8,32}+\z/
-    validates :password, presence: true, length: {minimum:8, maximum:32}, format: { with: VALID_REGEX }
-    validates :password_confirmation, presence: true, length: {minimum:8, maximum:32}, format: { with: VALID_REGEX }
-    
+    validates :password, presence: true, format: { with: VALID_REGEX }
+    #validates :password_confirmation, presence: true, format: { with: VALID_REGEX }
+    validate :valid_password_confirmation
     
 
     
     has_secure_password
+
+    private
+    
+    def valid_password_confirmation
+        if password_confirmation.blank?
+            errors.add(:password_confirmation, "can't be blank")
+        end
+    end
 end
