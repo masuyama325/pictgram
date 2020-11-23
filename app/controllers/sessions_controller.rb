@@ -1,10 +1,12 @@
 class SessionsController < ApplicationController
+  
   def new
   end
   
   def create
+    # byebug
     user = User.find_by(user_params)
-    if user && user.authenticate([:session][:password])
+    if user && user.authenticate(password_params[:password])
       log_in user
       redirect_to root_path, success: 'ログインに成功しました'
     else
@@ -15,7 +17,7 @@ class SessionsController < ApplicationController
   
   def destroy
     log_out
-    redirect_to root_path, info: 'ログアウトしました'
+    redirect_to root_url, info: 'ログアウトしました'
   end
   
   private
@@ -31,6 +33,10 @@ class SessionsController < ApplicationController
   private
   def user_params
     params.require(:session).permit(:email)
+  end
+  
+  def password_params
+    params.require(:session).permit(:password)
   end
   
 end
