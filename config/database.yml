@@ -50,5 +50,5 @@ test:
 production:
   <<: *default
   adapter: postgresql
-  encoding: unicord
+  encoding: unicode
   pool: 5
